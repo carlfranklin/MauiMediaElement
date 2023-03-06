@@ -41,4 +41,3 @@ public partial class MainPage : ContentPage
         audioMediaElement.Play();
     }
 }
-

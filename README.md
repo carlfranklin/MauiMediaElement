@@ -28,8 +28,6 @@ By the end of this demo, you will have achieved the following end results:
 
 ![Windows](images/403c9681ca22c701ed53df7b7da5039d15fb9455265df317181bf5c10454f9c8.png)  
 
-![Android](images/c232b916e9caacc75c3fb85b8dd62107e780911260350a96a2e06e0b2efa7fb7.png)
-
 ## Prerequisites
 
 The following prerequisites are needed for this demo.
@@ -165,7 +163,7 @@ The full *MainPage.xaml* file should look like this:
 Replace *MainPage.xaml.cs* with the following:
 
 ```csharp
-namespace MauiMediaElement;
+namespace MauiXamlMediaElement;
 
 public partial class MainPage : ContentPage
 {
@@ -198,16 +196,16 @@ The **Android** player only shows the ability to pause and play, and to jump to 
 
 Now, we are going to add an **MP3** audio file to the solution and play it from a button click. 
 
-Go to the *Platforms/Resources/Raw* folder, right-click on it, and click on the **Add/Existing Item...** option, and select an audio file.
+Go to the *Platforms/Resources/Raw* folder, right-click on it, and click on the **Add/Existing Item...** option, and select an audio file. If you want to use the one I used, download it from the repo.
 
 ![Add/Existing Item](images/1282660c7a2d2c412e044852e3a6023ecdf82eff2bdfa3aca4015668f4f881b8.png)  
 
 ![Audio File](images/cb6e9f08ab486a9e4de79342d0c51e917fd60c22c767962a711dd844483e6594.png)  
 
-Add the following markup before the video MediaElement:
+Add the following markup before the video `MediaElement`:
 
 ```xaml
-<Button Text="Play Embedded Audio" Clicked="Button_Clicked" />
+<Button Text="Play Audio" Clicked="Button_Clicked" />
 
 <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
@@ -258,7 +256,6 @@ public partial class MainPage : ContentPage
 {
     public MainPage()
     {
-        BindingContext = this;
         InitializeComponent();
     }
 
@@ -269,9 +266,9 @@ public partial class MainPage : ContentPage
 }
 ```
 
-Run the application on **Android** and the video should start playing, once the audio ends.
+Run the application on **Windows**. The video starts playing. You can play the embedded audio file by clicking the **Play Audio** button.
 
-![**Android**](images/b2913be16abf493ea4c032098bc8d43f4cb6b325c67d8bf5176adf1e44e3f746.png)  
+![image-20230306125654951](images/image-20230306125654951.png)
 
 Finally let's add the ability to control the volume of the video, but modifying the **MediaElement's** volume property with a **Slider**.
 
@@ -279,14 +276,16 @@ Go to the *MainPage.xaml* file and add the following code below the **videoMedia
 
 ```xaml
 <HorizontalStackLayout x:Name="volumeControl"
-                       IsVisible="False">
+           IsVisible="True">
 
     <Label Text="Volume" />
+
     <Slider Maximum="1.0"
-            Minimum="0.0"
-            Margin="10,0,0,0"
-            Value="{Binding Volume}"
-            WidthRequest="300" />
+        Minimum="0.0"
+        Margin="10,0,0,0"
+        Value="{Binding Volume}"
+        WidthRequest="300" />
+
 </HorizontalStackLayout>
 ```
 
@@ -384,7 +383,7 @@ public partial class MainPage : ContentPage
 }
 ```
 
-Run the application. The video will start playing. When you click the **Play Audio** button, You will hear the embedded mp3 file. You can change the volume for both using the **Slider**.
+Run the application. You can change the volume for both audio and video using the **Slider**.
 
  ![image-20230306123525332](images/image-20230306123525332.png)
 
