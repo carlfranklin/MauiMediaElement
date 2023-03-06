@@ -26,7 +26,7 @@ Overall, the **MediaElement** control is a powerful and flexible tool for adding
 
 By the end of this demo, you will have achieved the following end results:
 
-![Windows](images/403c9681ca22c701ed53df7b7da5039d15fb9455265df317181bf5c10454f9c8.png)  
+![image-20230306164250700](images/image-20230306164250700.png)  
 
 ## Prerequisites
 
@@ -63,7 +63,13 @@ Create a new MAUI project.
 
 ![Create a new MAUI project](images/fb54d5c0a15798c89f78f1b64b43682672231b092820be8eacd702516cc0bf20.png)  
 
-Name the project **MauiXamlMediaElement** and choose the location where you want to save it, and click **Next**.  Select **.NET 7.0 (Standard Term Support)** for the **Framework** and click **Create**.
+Name the project **MauiXamlMediaElement** and choose the location where you want to save it, and click **Next**.  
+
+![image-20230306164800861](images/image-20230306164800861.png)
+
+Select **.NET 7.0 (Standard Term Support)** for the **Framework** and click **Create**.
+
+![image-20230306164819951](images/image-20230306164819951.png)
 
 Once your project is created, you'll see the default **MAUI** app with a basic layout.
 
@@ -475,9 +481,14 @@ Replace *MainPage.xaml* with the following:
 </ContentPage>
 ```
 
+Note that we are specifying a `Loaded` event handler. This is because when the app loads, the `MediaElement` needs to initialize. When it's ready for you to access, the `Loaded` event occurs. Until that happens, the component doesn't exist, and you can't reference it.
+
+In the code behind, we'll use that handler to hook another event, `PositionChanged`, which we will use to update the Position in real time.
+
 Replace *MainPage.xaml.cs* with the following:
 
 ```c#
+using CommunityToolkit.Maui.Core.Primitives;
 namespace MauiXamlMediaElement;
 
 public partial class MainPage : ContentPage
@@ -529,11 +540,11 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         BindingContext = this;
-        
+
         InitializeComponent();
     }
 
-    private void VideoMediaElement_PositionChanged(object sender, CommunityToolkit.Maui.Core.Primitives.MediaPositionChangedEventArgs e)
+    private void VideoMediaElement_PositionChanged(object sender, MediaPositionChangedEventArgs e)
     {
         OnPropertyChanged(nameof(Position));
     }
@@ -545,15 +556,52 @@ public partial class MainPage : ContentPage
 
     private void videoMediaElement_Loaded(object sender, EventArgs e)
     {
-        videoMediaElement.PositionChanged += 
+        videoMediaElement.PositionChanged +=
             VideoMediaElement_PositionChanged;
     }
 }
 ```
 
+In the `Loaded` event we're hooking the `PositionChanged` event, where we simply tell the UI that our `Position` string property has changed:
+
+```c#
+private void VideoMediaElement_PositionChanged(object sender,
+    MediaPositionChangedEventArgs e)
+{
+    OnPropertyChanged(nameof(Position));
+}
+```
+
+`Position` is a read-only string property that returns a nicely formatted string that we can return on demand:
+
+```c#
+public string Position
+{
+    get
+    {
+        if (videoMediaElement != null)
+        {
+            var pos = videoMediaElement.Position;
+            var dur = videoMediaElement.Duration;
+            // Using a TimeSpan extension method
+            return pos.ToShortTimeString() + "/" 
+                + dur.ToShortTimeString();
+        }
+        else
+            return "";
+    }
+}
+```
+
+Note that we're calling our `TimeSpan` extension method, `ToShortTimeString()` which does a decent job of returning an efficient string representation of the time.
+
 Run the app, and notice that the Volume and Position are updated in real time:
 
 ![image-20230306164250700](images/image-20230306164250700.png)
+
+#### Handle Events
+
+You've already seen that we can use the Loaded event to do further initialization. 
 
 ## Summary
 

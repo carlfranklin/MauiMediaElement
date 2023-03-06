@@ -1,4 +1,5 @@
-﻿namespace MauiXamlMediaElement;
+﻿using CommunityToolkit.Maui.Core.Primitives;
+namespace MauiXamlMediaElement;
 
 public partial class MainPage : ContentPage
 {
@@ -53,7 +54,7 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private void VideoMediaElement_PositionChanged(object sender, CommunityToolkit.Maui.Core.Primitives.MediaPositionChangedEventArgs e)
+    private void VideoMediaElement_PositionChanged(object sender, MediaPositionChangedEventArgs e)
     {
         OnPropertyChanged(nameof(Position));
     }
