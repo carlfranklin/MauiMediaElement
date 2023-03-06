@@ -3,6 +3,30 @@ namespace MauiXamlMediaElement;
 
 public partial class MainPage : ContentPage
 {
+    private string mediaStatus = string.Empty;
+    public string MediaStatus
+    {
+        get => mediaStatus; 
+        private set
+        {
+            mediaStatus = value;
+            OnPropertyChanged(nameof(MediaStatus));
+        }
+    }
+
+    public string State
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return Enum.GetName(typeof(MediaElementState), videoMediaElement.CurrentState);
+            }
+            else
+                return "";
+        }
+    }
+
     public string Position
     {
         get
@@ -64,9 +88,41 @@ public partial class MainPage : ContentPage
         audioMediaElement.Play();
     }
 
+    private void VideoMediaElement_StateChanged(object sender, MediaStateChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(State));
+    }
+
     private void videoMediaElement_Loaded(object sender, EventArgs e)
     {
         videoMediaElement.PositionChanged +=
             VideoMediaElement_PositionChanged;
+
+        videoMediaElement.StateChanged +=
+            VideoMediaElement_StateChanged;
+
+        videoMediaElement.MediaOpened
+            += VideoMediaElement_MediaOpened;
+
+        videoMediaElement.MediaEnded
+            += VideoMediaElement_MediaEnded;
+
+        videoMediaElement.MediaFailed
+            += VideoMediaElement_MediaFailed;
+    }
+
+    private void VideoMediaElement_MediaFailed(object sender, MediaFailedEventArgs e)
+    {
+        MediaStatus = "Media Failed";
+    }
+
+    private void VideoMediaElement_MediaEnded(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Ended";
+    }
+
+    private void VideoMediaElement_MediaOpened(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Opened";
     }
 }

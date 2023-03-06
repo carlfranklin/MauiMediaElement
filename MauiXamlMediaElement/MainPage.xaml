@@ -42,6 +42,16 @@
 
                 <Label Text="{Binding Position}" />
 
+                <Label FontAttributes="Bold" Text="State:"
+                       Margin="10,0,10,0"/>
+
+                <Label Text="{Binding State}" />
+
+                <Label FontAttributes="Bold" Text="Media Status:"
+                       Margin="10,0,10,0"/>
+
+                <Label Text="{Binding MediaStatus}" />
+
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
