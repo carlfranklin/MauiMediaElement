@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiXamlMediaElement.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25"
+							 Padding="30,0"
+							 VerticalOptions="Center">
+
+            <Button Text="Play Audio" Clicked="Button_Clicked" />
+
+            <toolkit:MediaElement x:Name="audioMediaElement"
+								  IsVisible="False"
+								  Source="embed://audio.mp3"
+                                  ShouldShowPlaybackControls="True"
+								  />
+
+            <toolkit:MediaElement x:Name="videoMediaElement"
+								  IsVisible="True"
+								  ShouldAutoPlay="True"
+								  Aspect="AspectFill"
+								  Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                                  />
+
+            <HorizontalStackLayout x:Name="volumeControl"
+								   IsVisible="True">
+                <Label Text="Volume" />
+
+                <Slider Maximum="1.0"
+						Minimum="0.0"
+                        Margin="10,0,0,0"
+						Value="{Binding Volume}"
+						WidthRequest="300" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
