@@ -26,7 +26,7 @@ Overall, the **MediaElement** control is a powerful and flexible tool for adding
 
 By the end of this demo, you will have achieved the following end results:
 
-![image-20230306164250700](images/image-20230306164250700.png)  
+![image-20230306172837069](images/image-20230306172837069.png)  
 
 ## Prerequisites
 
@@ -731,6 +731,233 @@ private void VideoMediaElement_StateChanged(object sender,
     OnPropertyChanged(nameof(State));
 }
 ```
+
+In *MainPage.xaml*, add the following markup at line 45, just after the markup to show the position:
+
+```xaml
+<Label FontAttributes="Bold" Text="State:"
+       Margin="10,0,10,0"/>
+
+<Label Text="{Binding State}" />
+```
+
+Run the app, and you'll see that the state label changes when you pause, resume, stop, etc.
+
+![image-20230306171328486](images/image-20230306171328486.png)
+
+##### Media Status Events
+
+There are three media-related events you can handle, not so much for reporting to the user, but for you to act on in your code.
+
+| Event       | Description                                                  |
+| :---------- | :----------------------------------------------------------- |
+| MediaOpened | Occurs when the media stream has been validated and opened.  |
+| MediaEnded  | Occurs when the `MediaElement` finishes playing its media.   |
+| MediaFailed | Occurs when there's an error associated with the media source. |
+
+Let's create a `MediaStatus` string property, and update it from these three event handlers.
+
+Replace *MainPage.xaml* with the following:
+
+```xaml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiXamlMediaElement.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+			Spacing="25"
+			Padding="30,0"
+			VerticalOptions="Center">
+
+            <Button Text="Play Audio" Clicked="Button_Clicked" />
+
+            <toolkit:MediaElement x:Name="audioMediaElement"
+                      IsVisible="False"
+                      Source="embed://audio.mp3"
+                      ShouldShowPlaybackControls="True"
+                      />
+
+            <toolkit:MediaElement x:Name="videoMediaElement"
+                Loaded="videoMediaElement_Loaded"
+                ShouldAutoPlay="True"
+                Aspect="AspectFill"
+                Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
+
+            <HorizontalStackLayout x:Name="volumeControl"
+                       IsVisible="True">
+
+                <Label FontAttributes="Bold"  Text="Volume" />
+
+                <Slider Maximum="1.0"
+                    Minimum="0.0"
+                    Margin="10,0,10,0"
+                    Value="{Binding Volume}"
+                    WidthRequest="300" />
+
+                <Label Text="{Binding Volume, StringFormat='{0:F2}'}" />
+
+                <Label FontAttributes="Bold" Text="Position:"
+                       Margin="10,0,10,0"/>
+
+                <Label Text="{Binding Position}" />
+
+                <Label FontAttributes="Bold" Text="State:"
+                       Margin="10,0,10,0"/>
+
+                <Label Text="{Binding State}" />
+
+                <Label FontAttributes="Bold" Text="Media Status:"
+                       Margin="10,0,10,0"/>
+
+                <Label Text="{Binding MediaStatus}" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+```
+
+Replace *MainPage.xaml.cs* with the following:
+
+```c#
+using CommunityToolkit.Maui.Core.Primitives;
+namespace MauiXamlMediaElement;
+
+public partial class MainPage : ContentPage
+{
+    private string mediaStatus = string.Empty;
+    public string MediaStatus
+    {
+        get => mediaStatus; 
+        private set
+        {
+            mediaStatus = value;
+            OnPropertyChanged(nameof(MediaStatus));
+        }
+    }
+
+    public string State
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return Enum.GetName(typeof(MediaElementState), videoMediaElement.CurrentState);
+            }
+            else
+                return "";
+        }
+    }
+
+    public string Position
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                var pos = videoMediaElement.Position;
+                var dur = videoMediaElement.Duration;
+                // Using a TimeSpan extension method
+                return pos.ToShortTimeString() + "/" + dur.ToShortTimeString();
+            }
+            else
+                return "";
+        }
+    }
+
+    public double Volume
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return videoMediaElement.Volume;
+            }
+            else return 1;
+        }
+        set
+        {
+            bool setFlag = false;
+            if (videoMediaElement != null && videoMediaElement.Volume != value)
+            {
+                videoMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (audioMediaElement != null && audioMediaElement.Volume != value)
+            {
+                audioMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (setFlag)
+                OnPropertyChanged(nameof(Volume));
+        }
+    }
+
+    public MainPage()
+    {
+        BindingContext = this;
+
+        InitializeComponent();
+    }
+
+    private void VideoMediaElement_PositionChanged(object sender, MediaPositionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Position));
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        audioMediaElement.Play();
+    }
+
+    private void VideoMediaElement_StateChanged(object sender, MediaStateChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(State));
+    }
+
+    private void videoMediaElement_Loaded(object sender, EventArgs e)
+    {
+        videoMediaElement.PositionChanged +=
+            VideoMediaElement_PositionChanged;
+
+        videoMediaElement.StateChanged +=
+            VideoMediaElement_StateChanged;
+
+        videoMediaElement.MediaOpened
+            += VideoMediaElement_MediaOpened;
+
+        videoMediaElement.MediaEnded
+            += VideoMediaElement_MediaEnded;
+
+        videoMediaElement.MediaFailed
+            += VideoMediaElement_MediaFailed;
+    }
+
+    private void VideoMediaElement_MediaFailed(object sender, MediaFailedEventArgs e)
+    {
+        MediaStatus = "Media Failed";
+    }
+
+    private void VideoMediaElement_MediaEnded(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Ended";
+    }
+
+    private void VideoMediaElement_MediaOpened(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Opened";
+    }
+}
+```
+
+Run the app. Scrub the position almost to the end. Notice that the `MediaStatus` changes.
+
+![image-20230306172743495](images/image-20230306172743495.png)
 
 
 
