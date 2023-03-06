@@ -2,6 +2,22 @@
 
 public partial class MainPage : ContentPage
 {
+    public string Position
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                var pos = videoMediaElement.Position;
+                var dur = videoMediaElement.Duration;
+                // Using a TimeSpan extension method
+                return pos.ToShortTimeString() + "/" + dur.ToShortTimeString();
+            }
+            else
+                return "";
+        }
+    }
+
     public double Volume
     {
         get
@@ -33,11 +49,23 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         BindingContext = this;
+
         InitializeComponent();
+    }
+
+    private void VideoMediaElement_PositionChanged(object sender, CommunityToolkit.Maui.Core.Primitives.MediaPositionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Position));
     }
 
     private void Button_Clicked(object sender, EventArgs e)
     {
         audioMediaElement.Play();
+    }
+
+    private void videoMediaElement_Loaded(object sender, EventArgs e)
+    {
+        videoMediaElement.PositionChanged +=
+            VideoMediaElement_PositionChanged;
     }
 }

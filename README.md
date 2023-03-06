@@ -387,6 +387,174 @@ Run the application. You can change the volume for both audio and video using th
 
  ![image-20230306123525332](images/image-20230306123525332.png)
 
+#### Add Volume and Position Indicators
+
+First, we're going to need code to format a `TimeSpan` to a string that makes sense for UI. Add the following class to the project:
+
+*Extensions.cs*:
+
+```c#
+public static class Extensions
+{
+    public static string ToShortTimeString(this TimeSpan t)
+    {
+        string ret = "";
+        if (t.Hours > 0)
+            ret = $"{t.Hours}:";
+
+        if (t.TotalMinutes > 0)
+        {
+            if (t.Hours == 0)
+                ret += $"{t.Minutes}:";
+            else
+                ret += $"{t.Minutes.ToString("D2")}:";
+        }
+
+        if (t.TotalSeconds > 0)
+            ret += $"{t.Seconds.ToString("D2")}";
+        else
+            ret += "00";
+
+        return ret;
+    }
+}
+```
+
+Replace *MainPage.xaml* with the following:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiXamlMediaElement.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+			Spacing="25"
+			Padding="30,0"
+			VerticalOptions="Center">
+
+            <Button Text="Play Audio" Clicked="Button_Clicked" />
+
+            <toolkit:MediaElement x:Name="audioMediaElement"
+                      IsVisible="False"
+                      Source="embed://audio.mp3"
+                      ShouldShowPlaybackControls="True"
+                      />
+
+            <toolkit:MediaElement x:Name="videoMediaElement"
+                Loaded="videoMediaElement_Loaded"
+                ShouldAutoPlay="True"
+                Aspect="AspectFill"
+                Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
+
+            <HorizontalStackLayout x:Name="volumeControl"
+                       IsVisible="True">
+
+                <Label FontAttributes="Bold"  Text="Volume" />
+
+                <Slider Maximum="1.0"
+                    Minimum="0.0"
+                    Margin="10,0,10,0"
+                    Value="{Binding Volume}"
+                    WidthRequest="300" />
+
+                <Label Text="{Binding Volume, StringFormat='{0:F2}'}" />
+
+                <Label FontAttributes="Bold" Text="Position:"
+                       Margin="10,0,10,0"/>
+                
+                <Label Text="{Binding Position}" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+```
+
+Replace *MainPage.xaml.cs* with the following:
+
+```c#
+namespace MauiXamlMediaElement;
+
+public partial class MainPage : ContentPage
+{
+    public string Position
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                var pos = videoMediaElement.Position;
+                var dur = videoMediaElement.Duration;
+                // Using a TimeSpan extension method
+                return pos.ToShortTimeString() + "/" + dur.ToShortTimeString();
+            }
+            else
+                return "";
+        }
+    }
+
+    public double Volume
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return videoMediaElement.Volume;
+            }
+            else return 1;
+        }
+        set
+        {
+            bool setFlag = false;
+            if (videoMediaElement != null && videoMediaElement.Volume != value)
+            {
+                videoMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (audioMediaElement != null && audioMediaElement.Volume != value)
+            {
+                audioMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (setFlag)
+                OnPropertyChanged(nameof(Volume));
+        }
+    }
+
+    public MainPage()
+    {
+        BindingContext = this;
+        
+        InitializeComponent();
+    }
+
+    private void VideoMediaElement_PositionChanged(object sender, CommunityToolkit.Maui.Core.Primitives.MediaPositionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Position));
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        audioMediaElement.Play();
+    }
+
+    private void videoMediaElement_Loaded(object sender, EventArgs e)
+    {
+        videoMediaElement.PositionChanged += 
+            VideoMediaElement_PositionChanged;
+    }
+}
+```
+
+Run the app, and notice that the Volume and Position are updated in real time:
+
+![image-20230306164250700](images/image-20230306164250700.png)
+
 ## Summary
 
 In this demo we looked at the **MediaElement** control in a **.NET MAUI** application. The **MediaElement** control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
