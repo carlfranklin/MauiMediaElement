@@ -1,14 +1,20 @@
 # Introduction
 
-In this demo, we will explore the capabilities of the **MediaElement** control in a **.NET MAUI** Application. By delving deep into the **MediaElement** control, we'll discover its powerful features.
+In this demo, we will explore the capabilities of the `MediaElement` control in a **.NET MAUI** Application. By delving deep into the `MediaElement` control, we'll discover its powerful features.
 
-The **MediaElement** control provides a simple way to play audio and video files. It supports a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others. The control can also be used to play media from URLs or streams.
+I will show you how to use the `MediaElement` in a MAUI XAML app and also in a MAUI Blazor app.
 
-In addition to basic playback features, the **MediaElement** control provides a number of features, such as the ability to control playback speed, and adjust volume. Developers can also customize the control's appearance and behavior to suit their specific needs.
+I recorded myself building these applications step-by-step in a YouTube video for The .NET Show episode 38.
 
-Overall, the **MediaElement** control is a powerful and flexible tool for adding multimedia capabilities to your cross-platform applications built using **MAUI**.
+The `MediaElement` control provides a simple way to play audio and video files. It supports a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others. The control can also be used to play media from URLs or streams.
 
->:blue_book: The MediaElement control is compatible with a variety of platforms including iOS, Android, Windows, macOS, and Tizen.
+In addition to basic playback features, the `MediaElement` control provides a number of features, such as the ability to control playback speed, and adjust volume. Developers can also customize the control's appearance and behavior to suit their specific needs.
+
+Overall, the `MediaElement` control is a powerful and flexible tool for adding multimedia capabilities to your cross-platform applications built using **MAUI**.
+
+>:blue_book: The `MediaElement` control is compatible with a variety of platforms including iOS, Android, Windows, macOS, and Tizen.
+
+### Using MediaElement in a MAUI XAML App
 
 By the end of this demo, you will have achieved the following end results:
 
@@ -34,7 +40,7 @@ In order to build `.NET MAUI` applications, you need the `.NET Multi-platform Ap
 
 ## Demo
 
-In the following demo we will create a **.NET MAUI Application** and we will cover the main features of the **MediaElement** control, including:
+In the following demo we will create a **.NET MAUI Application** and we will cover the main features of the `MediaElement` control, including:
 
 - Playing audio and video files
 - Playing media from URLs or embedded files
@@ -61,13 +67,13 @@ Select **.NET 7.0 (Standard Term Support)** for the **Framework** and click **Cr
 
 Once your project is created, you'll see the default **MAUI** app with a basic layout.
 
-To add the **MediaElement** control to your layout, you would simply add the following code to your **XAML** file:
+To add the `MediaElement` control to your layout, you would simply add the following code to your **XAML** file:
 
 ```xaml
 <MediaElement Source="{URL TO SOURCE LINK}" />
 ```
 
-To use the **MediaElement** control in your application, you'll need to add the corresponding **NuGet** package. This control is part of the **.NET Multi-platform App UI (.NET MAUI) Community Toolkit**, so the first step is to include the package in your project.
+To use the `MediaElement` control in your application, you'll need to add the corresponding **NuGet** package. This control is part of the **.NET Multi-platform App UI (.NET MAUI) Community Toolkit**, so the first step is to include the package in your project.
 
 Open the **NuGet Package Console** and run the following command:
 
@@ -75,9 +81,13 @@ Open the **NuGet Package Console** and run the following command:
 install-package CommunityToolkit.Maui.MediaElement
 ```
 
-You will be presented with a *ReadMe.txt* file with instructions on how to enable the **.NET Multi-platform App UI (.NET MAUI) Community Toolkit**. In short, you need to add **.UseMauiCommunityToolkitMediaElement()** to initialize the **.NET MAUI Community Toolkit MediaElement** control in to your **builder** code.
+You will be presented with a *ReadMe.txt* file with instructions on how to enable the **.NET Multi-platform App UI (.NET MAUI) Community Toolkit**. In short, you need to add `.UseMauiCommunityToolkitMediaElement()` to initialize the **.NET MAUI Community Toolkit MediaElement** control in to your **builder** code.
 
-Add **.UseMauiCommunityToolkitMediaElement()** after **.UseMauiApp<App>()**.
+Add the following code to *Program.cs* at line 12:
+
+```c#
+.UseMauiCommunityToolkitMediaElement()
+```
 
 Your *MainProgram.cs* file should look like this now:
 
@@ -111,13 +121,13 @@ public static class MauiProgram
 
 >:blue_book: For more information about the **.NET Multi-platform App UI (.NET MAUI) Community Toolkit** go to https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/
 
-Open up *MainPage.xaml* and add the following namespace at the top:
+Open up *MainPage.xaml* and add the following namespace on line 4:
 
 ```xaml
 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 ```
 
-Now you can use the toolkit. Let's replace the existing image, labels, and buttons in the *MainPage.xaml* file with the following code:
+Now you can use the toolkit. Let's replace the existing image, labels, and buttons in the *MainPage.xaml* file with the following:
 
 ```xaml
 <toolkit:MediaElement x:Name="videoMediaElement"
@@ -151,7 +161,7 @@ The full *MainPage.xaml* file should look like this:
 </ContentPage>
 ```
 
->:point_up: In the code snippet above, notice that we're configuring the **MediaElement** control by setting three of its properties: **ShouldAutoPlay** property is set to **True**, so that the video starts playing automatically when the application is launched, **Aspect** is set to **AspectFill**. This setting ensures that the video fills the whole area of its parent control, in this case, the screen minus the margins. Lastly, we're setting the **Source** property to the **URL** of the video that we want to play.
+>:point_up: In the code snippet above, notice that we're configuring the `MediaElement` control by setting three of its properties: `ShouldAutoPlay` property is set to **True**, so that the video starts playing automatically when the application is launched, `Aspect` is set to **AspectFill**. This setting ensures that the video fills the whole area of its parent control, in this case, the screen minus the margins. Lastly, we're setting the `Source` property to the **URL** of the video that we want to play.
 
 Replace *MainPage.xaml.cs* with the following:
 
@@ -168,6 +178,8 @@ public partial class MainPage : ContentPage
 ```
 
 Run the application keeping **Windows Machine** as the target, and you should see the *BigBuckBunny.mp4* video playing.
+
+> :point_up: [Big Buck Bunny](https://en.wikipedia.org/wiki/Big_Buck_Bunny) (code-named **Project Peach**) is a 2008 short [computer-animated](https://en.wikipedia.org/wiki/Computer_animation) [comedy film](https://en.wikipedia.org/wiki/Comedy_film) featuring animals of the forest, made by the Blender Institute, part of the [Blender Foundation](https://en.wikipedia.org/wiki/Blender_Foundation). Like the foundation's previous film, *[Elephants Dream](https://en.wikipedia.org/wiki/Elephants_Dream)*, the film was made using [Blender](https://en.wikipedia.org/wiki/Blender_(software)), a [free and open-source software](https://en.wikipedia.org/wiki/Free_and_open-source_software) application for 3D computer modeling and animation developed by the same foundation. It was released as an [open-source film](https://en.wikipedia.org/wiki/Open-source_film) under the [Creative Commons](https://en.wikipedia.org/wiki/Creative_Commons) [Attribution 2.5 license](https://en.wikipedia.org/wiki/Creative_Commons_license).
 
 ![BigBuckBunny.mp4](images/403c9681ca22c701ed53df7b7da5039d15fb9455265df317181bf5c10454f9c8.png)  
 
@@ -187,15 +199,27 @@ The **Android** player only shows the ability to pause and play, and to jump to 
 
 >:blue_book: You can hide the player controls from the users by setting the **ShouldShowPlaybackControls** property to **False**.
 
-Now, we are going to add an **MP3** audio file to the solution and play it from a button click.
+#### Setting a Source URL at runtime
 
-Go to the *Platforms/Resources/Raw* folder, right-click on it, and click on the **Add/Existing Item...** option, and select an audio file. If you want to use the one I used, download it from the repo.
+You can set the source dynamically at runtime to a URL string:
+
+```c#
+videoMediaElement.Source = "https://YOUR-URL-HERE";
+```
+
+Note that you'll have to do this from a button click once the `MediaElement` has loaded. We'll handle events in a few minutes.
+
+#### Play a media file from an embedded resource
+
+Next we are going to add an **MP3** audio file to the solution and play it from a button click.
+
+Go to the *Platforms/Resources/Raw* folder, right-click on it, and click on the **Add/Existing Item...** option, and select an audio file. If you want to use the one I used (audio.mp3), you can download it from the repo.
 
 ![Add/Existing Item](images/1282660c7a2d2c412e044852e3a6023ecdf82eff2bdfa3aca4015668f4f881b8.png)  
 
 ![Audio File](images/cb6e9f08ab486a9e4de79342d0c51e917fd60c22c767962a711dd844483e6594.png)  
 
-Add the following markup before the video `MediaElement`:
+Add the following markup before the video `MediaElement ` at line 13 :
 
 ```xaml
 <Button Text="Play Audio" Clicked="Button_Clicked" />
@@ -220,6 +244,7 @@ The complete *MainPage.xaml* file should look like this:
         <VerticalStackLayout Spacing="25"
                              Padding="30,0"
                              VerticalOptions="Center">
+            
             <Button Text="Play Audio" Clicked="Button_Clicked" />
 
             <toolkit:MediaElement x:Name="audioMediaElement"
@@ -240,22 +265,12 @@ The complete *MainPage.xaml* file should look like this:
 </ContentPage>
 ```
 
-Replace *MainPage.xaml.cs* file with the following:
+Add the following to *MainPage.xaml.cs* at line 9:
 
 ```csharp
-namespace MauiXamlMediaElement;
-
-public partial class MainPage : ContentPage
+private void Button_Clicked(object sender, EventArgs e)
 {
-    public MainPage()
-    {
-        InitializeComponent();
-    }
-
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        audioMediaElement.Play();
-    }
+    audioMediaElement.Play();
 }
 ```
 
@@ -263,13 +278,22 @@ Run the application on **Windows**. The video starts playing. You can play the e
 
 ![image-20230306125654951](images/image-20230306125654951.png)
 
-Finally let's add the ability to control the volume of the video, but modifying the **MediaElement's** volume property with a **Slider**.
+#### Load an embedded resource file at runtime
 
-Go to the *MainPage.xaml* file and add the following code below the **videoMediaElement**.
+You can load a media file from a resource dynamically at runtime with the following syntax:
+
+```c#
+audioMediaElement.Source = MediaSource.FromResource("audio.mp3");
+```
+
+#### Control volume with custom UI
+
+Next we'll add the ability to control the volume of the video by modifying the `MediaElement'`s volume property with a **Slider**.
+
+Go to the *MainPage.xaml* file and add the following code at line 26:
 
 ```xaml
-<HorizontalStackLayout x:Name="volumeControl"
-           IsVisible="True">
+<HorizontalStackLayout x:Name="volumeControl" IsVisible="True">
 
     <Label Text="Volume" />
 
@@ -311,8 +335,8 @@ The complete file should look like this:
                                   Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
                                   />
 
-            <HorizontalStackLayout x:Name="volumeControl"
-                                   IsVisible="True">
+            <HorizontalStackLayout x:Name="volumeControl" IsVisible="True">
+                
                 <Label Text="Volume" />
 
                 <Slider Maximum="1.0"
@@ -320,6 +344,7 @@ The complete file should look like this:
                         Margin="10,0,0,0"
                         Value="{Binding Volume}"
                         WidthRequest="300" />
+                
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
@@ -375,6 +400,10 @@ public partial class MainPage : ContentPage
     }
 }
 ```
+
+I added a `Volume` property to the page. Note that the code checks for nulls and only changes the `Volume` property of the `MediaElement` controls if they are not null and their `Volume` property values are different than the incoming value.
+
+I also set the page's `BindingContext` property to the page instance, so we can bind UI elements to our public properties.
 
 Run the application. You can change the volume for both audio and video using the **Slider**.
 
@@ -468,7 +497,7 @@ Replace *MainPage.xaml* with the following:
 </ContentPage>
 ```
 
-Note that we are specifying a `Loaded` event handler. This is because when the app loads, the `MediaElement` needs to initialize. When it's ready for you to access, the `Loaded` event occurs. Until that happens, the component doesn't exist, and you can't reference it.
+Note that we are specifying a `Loaded` event handler. This is because when the app loads, the `MediaElement` needs to initialize. When it's ready for you to access, the `Loaded` event occurs. Until that happens, the component doesn't exist and you can't reference it.
 
 In the code behind, we'll use that handler to hook another event, `PositionChanged`, which we will use to update the Position in real time.
 
@@ -582,7 +611,7 @@ public string Position
 
 Note that we're calling our `TimeSpan` extension method, `ToShortTimeString()` which does a decent job of returning an efficient string representation of the time.
 
-Run the app, and notice that the Volume and Position are updated in real time:
+Run the app, and notice that the Volume and Position of the video are updated in real time:
 
 ![image-20230306164250700](images/image-20230306164250700.png)
 
@@ -972,7 +1001,11 @@ As before, open the **NuGet Package Console** and run the following command:
 install-package CommunityToolkit.Maui.MediaElement
 ```
 
-In *MauiProgram.cs*, add **.UseMauiCommunityToolkitMediaElement()** after **.UseMauiApp<`App`>()**.
+In *MauiProgram.cs*, add the following at line 13:
+
+```c#
+.UseMauiCommunityToolkitMediaElement()
+```
 
 Your *MainProgram.cs* file should look like this now:
 
@@ -1010,9 +1043,42 @@ public static class MauiProgram
 }
 ```
 
-### Add Audio Resource
+#### Add Extension Class
 
-Add the *audio.mp3* file to your *Resources/Raw* folder 
+Add the *Extensions* class:
+
+*Extensions.cs*:
+
+```c#
+public static class Extensions
+{
+    public static string ToShortTimeString(this TimeSpan t)
+    {
+        string ret = "";
+        if (t.Hours > 0)
+            ret = $"{t.Hours}:";
+
+        if (t.TotalMinutes > 0)
+        {
+            if (t.Hours == 0)
+                ret += $"{t.Minutes}:";
+            else
+                ret += $"{t.Minutes.ToString("D2")}:";
+        }
+
+        if (t.TotalSeconds > 0)
+            ret += $"{t.Seconds.ToString("D2")}";
+        else
+            ret += "00";
+
+        return ret;
+    }
+}
+```
+
+#### Add audio, XAML, and code files
+
+Add the *audio.mp3* file to your *Resources/Raw* folder just as we did in the **MauiXamlMediaElement** project.
 
 Next, add a new XAML page called *MediaPage.xaml* to the project, and include a code behind:
 
@@ -1096,7 +1162,9 @@ I added a **Go Back** button to return to the Blazor content.
 
 I also did a quick fix to a styling issue by setting the `TextColor` property to all the `Label` controls to "Black". They don't show up otherwise.
 
-*MainPage.xaml.cs*:
+Add the following code-behind file:
+
+*MediaPage.xaml.cs*:
 
 ```c#
 using CommunityToolkit.Maui.Core.Primitives;
@@ -1239,46 +1307,13 @@ There are a couple differences between this and the code from the **MauiXamlMedi
 
 The namespace and the class name have changed.
 
-I added this code to handle navigation back to the Blazor content:
+I added this code to stop playing the video and handle navigation back to the Blazor content when the **Go Back** button is pressed:
 
 ```c#
 private void BackButton_Clicked(object sender, EventArgs e)
 {
     videoMediaElement.Stop();
     Navigation.PopModalAsync();
-}
-```
-
-#### Add Extension Class
-
-You'll also need to add the *Extensions* class:
-
-*Extensions.cs*:
-
-```c#
-public static class Extensions
-{
-    public static string ToShortTimeString(this TimeSpan t)
-    {
-        string ret = "";
-        if (t.Hours > 0)
-            ret = $"{t.Hours}:";
-
-        if (t.TotalMinutes > 0)
-        {
-            if (t.Hours == 0)
-                ret += $"{t.Minutes}:";
-            else
-                ret += $"{t.Minutes.ToString("D2")}:";
-        }
-
-        if (t.TotalSeconds > 0)
-            ret += $"{t.Seconds.ToString("D2")}";
-        else
-            ret += "00";
-
-        return ret;
-    }
 }
 ```
 
@@ -1300,7 +1335,7 @@ Run the app, and you'll notice there's a purple MAUI toolbar across the top.
 
 ![image-20230306194025460](images/image-20230306194025460.png)
 
-We can remove that by adding the following to *MainPage.xaml* on line 7:
+We can remove that by adding the following to *MainPage.xaml* on line 6 before the greater than sign:
 
 ```xaml
 NavigationPage.HasNavigationBar="False"
@@ -1336,17 +1371,23 @@ You'll see the media page, just like we saw in the Xaml app.
 
 ![image-20230306202450275](images/image-20230306202450275.png)
 
-Click the **Go Back** button to return to the Blazor content.
+Click the **Go Back** button to return to the Blazor content. 
 
 ## Summary
 
 In this demo we looked at the **MediaElement** control in a **.NET MAUI** application. The **MediaElement** control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
 
-We also learned how to play video and audio files, from a URL and embedded files.
+We learned how to play video and audio files from a URL and also from embedded resource files.
 
-We also learned how to adjust the volume using the **Slider** control.
+We learned how to set the source dynamically at runtime from a URL or local resource file name.
 
-Finally, we learned that we can't directly add **XAML** controls to a **Blazor** page or component, but we can combine **Blazor** and **XAML** pages in the same **MAUI** app.
+We learned how to adjust the volume using the **Slider** control.
+
+We learned that we can't directly add **XAML** controls to a **Blazor** page or component, but we can combine **Blazor** and **XAML** pages in the same **MAUI** app.
+
+We learned how to navigate to a XAML page from a Blazor UI interaction.
+
+We learned that Gerald Versluis is a badass.
 
 For more information about the **.NET MAUI MediaElement** control, check-out the resources below.
 
