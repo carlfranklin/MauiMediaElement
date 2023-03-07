@@ -59,9 +59,9 @@ In the following demo we will create a **.NET MAUI Application** and we will cov
 
 Before we can explore the features of the MediaElement control in MAUI, we need to create a new MAUI application. To do this, follow these steps:
 
-Create a new MAUI project.
+Create a new **.NET MAUI App** project.
 
-![Create a new MAUI project](images/fb54d5c0a15798c89f78f1b64b43682672231b092820be8eacd702516cc0bf20.png)  
+![image-20230306175819074](images/image-20230306175819074.png)  
 
 Name the project **MauiXamlMediaElement** and choose the location where you want to save it, and click **Next**.  
 
@@ -959,15 +959,407 @@ Run the app. Scrub the position almost to the end. Notice that the `MediaStatus`
 
 ![image-20230306172743495](images/image-20230306172743495.png)
 
+## Using MediaElement in a MAUI Blazor App
 
+If you're thinking you can add MAUI Xaml components to a MAUI Blazor page (or component), stop thinking. You can't, at least not as of this writing.
+
+What you **CAN** do, however, is add a XAML page (containing `MediaElement` or other XAML controls) to a MAUI Blazor app and navigate to that page and back. 
+
+I learned this technique from Gerald Versluis' excellent YouTube Tutorial, [3 Ways [to] Combine .NET MAUI and .NET MAUI Blazor Hybrid](https://www.youtube.com/watch?v=2dllz4NZC0I). You should do yourself a favor and subscribe to his YouTube channel. 
+
+Create a new **.NET MAUI Blazor App** Project
+
+![image-20230306175747789](images/image-20230306175747789.png)
+
+Name the project **MauiBlazorMediaElement** and choose the location where you want to save it, and click **Next**.  
+
+![image-20230306175714727](images/image-20230306175714727.png)
+
+Select **.NET 7.0 (Standard Term Support)** for the **Framework** and click **Create**.
+
+![image-20230306180117851](images/image-20230306180117851.png)
+
+As before, open the **NuGet Package Console** and run the following command:
+
+```powershell
+install-package CommunityToolkit.Maui.MediaElement
+```
+
+In *MauiProgram.cs*, add **.UseMauiCommunityToolkitMediaElement()** after **.UseMauiApp<`App`>()**.
+
+Your *MainProgram.cs* file should look like this now:
+
+```c#
+using Microsoft.Extensions.Logging;
+using MauiBlazorMediaElement.Data;
+using CommunityToolkit.Maui;
+
+namespace MauiBlazorMediaElement;
+
+public static class MauiProgram
+{
+	public static MauiApp CreateMauiApp()
+	{
+		var builder = MauiApp.CreateBuilder();
+		builder
+			.UseMauiApp<App>()
+            .UseMauiCommunityToolkitMediaElement()
+            .ConfigureFonts(fonts =>
+			{
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+			});
+
+		builder.Services.AddMauiBlazorWebView();
+
+#if DEBUG
+		builder.Services.AddBlazorWebViewDeveloperTools();
+		builder.Logging.AddDebug();
+#endif
+
+		builder.Services.AddSingleton<WeatherForecastService>();
+
+		return builder.Build();
+	}
+}
+```
+
+###### Add Audio Resource
+
+Add the *audio.mp3* file to your *Resources/Raw* folder 
+
+Next, add a new XAML page called *MediaPage.xaml* to the project, and include a code behind:
+
+*MediaPage.xaml*:
+
+```xaml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiBlazorMediaElement.MediaPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+			Spacing="25"
+			Padding="30,0"
+			VerticalOptions="Center">
+
+            <HorizontalStackLayout>
+                <Button Text="Go Back" Clicked="BackButton_Clicked" />
+                <Button Text="Play Audio" Clicked="Button_Clicked" />
+            </HorizontalStackLayout>
+
+            <toolkit:MediaElement x:Name="audioMediaElement"
+                      IsVisible="False"
+                      Source="embed://audio.mp3"
+                      ShouldShowPlaybackControls="True"
+                      />
+
+            <toolkit:MediaElement x:Name="videoMediaElement"
+                Loaded="videoMediaElement_Loaded"
+                ShouldAutoPlay="True"
+                Aspect="AspectFill"
+                Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
+
+            <HorizontalStackLayout x:Name="volumeControl"
+                       IsVisible="True">
+
+                <Label TextColor="Black" FontAttributes="Bold"  Text="Volume" />
+
+                <Slider Maximum="1.0"
+                    Minimum="0.0"
+                    Margin="10,0,10,0"
+                    Value="{Binding Volume}"
+                    WidthRequest="300" />
+
+                <Label TextColor="Black" Text="{Binding Volume, StringFormat='{0:F2}'}" />
+
+                <Label FontAttributes="Bold" Text="Position:"
+                       Margin="10,0,10,0"/>
+
+                <Label TextColor="Black" Text="{Binding Position}" />
+
+                <Label TextColor="Black" FontAttributes="Bold" Text="State:"
+                       Margin="10,0,10,0"/>
+
+                <Label TextColor="Black" Text="{Binding State}" />
+
+                <Label TextColor="Black" FontAttributes="Bold" Text="Media Status:"
+                       Margin="10,0,10,0"/>
+
+                <Label TextColor="Black" Text="{Binding MediaStatus}" />
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+```
+
+Notice that this is almost exactly the same page as we created in the **MauiXamlMediaElement** project. except for a few changes.
+
+I've changed the class name on line 5:
+
+```c#
+x:Class="MauiBlazorMediaElement.MediaPage"
+```
+
+I added a **Go Back** button to return to the Blazor content.
+
+I also did a quick fix to a styling issue by setting the `TextColor` property to all the `Label` controls to "Black". They don't show up otherwise.
+
+*MainPage.xaml.cs*:
+
+```c#
+using CommunityToolkit.Maui.Core.Primitives;
+
+namespace MauiBlazorMediaElement;
+
+public partial class MediaPage : ContentPage
+{
+    private string mediaStatus = string.Empty;
+    public string MediaStatus
+    {
+        get => mediaStatus;
+        private set
+        {
+            mediaStatus = value;
+            OnPropertyChanged(nameof(MediaStatus));
+        }
+    }
+
+    public string State
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return Enum.GetName(typeof(MediaElementState), videoMediaElement.CurrentState);
+            }
+            else
+                return "";
+        }
+    }
+
+    public string Position
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                var pos = videoMediaElement.Position;
+                var dur = videoMediaElement.Duration;
+                // Using a TimeSpan extension method
+                return pos.ToShortTimeString() + "/" + dur.ToShortTimeString();
+            }
+            else
+                return "";
+        }
+    }
+
+    public double Volume
+    {
+        get
+        {
+            if (videoMediaElement != null)
+            {
+                return videoMediaElement.Volume;
+            }
+            else return 1;
+        }
+        set
+        {
+            bool setFlag = false;
+            if (videoMediaElement != null && videoMediaElement.Volume != value)
+            {
+                videoMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (audioMediaElement != null && audioMediaElement.Volume != value)
+            {
+                audioMediaElement.Volume = value;
+                setFlag = true;
+            }
+            if (setFlag)
+                OnPropertyChanged(nameof(Volume));
+        }
+    }
+
+    public MediaPage()
+    {
+        BindingContext = this;
+        InitializeComponent();
+    }
+
+    private void VideoMediaElement_PositionChanged(object sender, MediaPositionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Position));
+    }
+
+    private void BackButton_Clicked(object sender, EventArgs e)
+    {
+        videoMediaElement.Stop();
+        Navigation.PopModalAsync();
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        audioMediaElement.Play();
+    }
+
+    private void VideoMediaElement_StateChanged(object sender, MediaStateChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(State));
+    }
+
+    private void videoMediaElement_Loaded(object sender, EventArgs e)
+    {
+        videoMediaElement.PositionChanged +=
+            VideoMediaElement_PositionChanged;
+
+        videoMediaElement.StateChanged +=
+            VideoMediaElement_StateChanged;
+
+        videoMediaElement.MediaOpened
+            += VideoMediaElement_MediaOpened;
+
+        videoMediaElement.MediaEnded
+            += VideoMediaElement_MediaEnded;
+
+        videoMediaElement.MediaFailed
+            += VideoMediaElement_MediaFailed;
+    }
+
+    private void VideoMediaElement_MediaFailed(object sender, MediaFailedEventArgs e)
+    {
+        MediaStatus = "Media Failed";
+    }
+
+    private void VideoMediaElement_MediaEnded(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Ended";
+    }
+
+    private void VideoMediaElement_MediaOpened(object sender, EventArgs e)
+    {
+        MediaStatus = "Media Opened";
+    }
+}
+```
+
+There are a couple differences between this and the code from the **MauiXamlMediaElement** project.
+
+The namespace and the class name have changed.
+
+I added this code to handle navigation back to the Blazor content:
+
+```c#
+private void BackButton_Clicked(object sender, EventArgs e)
+{
+    videoMediaElement.Stop();
+    Navigation.PopModalAsync();
+}
+```
+
+###### Add Extension Class
+
+You'll also need to add the *Extensions* class:
+
+*Extensions.cs*:
+
+```c#
+public static class Extensions
+{
+    public static string ToShortTimeString(this TimeSpan t)
+    {
+        string ret = "";
+        if (t.Hours > 0)
+            ret = $"{t.Hours}:";
+
+        if (t.TotalMinutes > 0)
+        {
+            if (t.Hours == 0)
+                ret += $"{t.Minutes}:";
+            else
+                ret += $"{t.Minutes.ToString("D2")}:";
+        }
+
+        if (t.TotalSeconds > 0)
+            ret += $"{t.Seconds.ToString("D2")}";
+        else
+            ret += "00";
+
+        return ret;
+    }
+}
+```
+
+To navigate from Blazor to the new page, we have to wrap the `MainPage` in a `NavigationPage`. That gives us the ability to navigate.
+
+Change line 9 of *App.xaml.cs* to the following:
+
+``` c#
+MainPage = new NavigationPage(new MainPage());
+```
+
+Since the `Counter` page already has a button with a click handler, let's just navigate from there. Add the following code to *Counter.razor* at line 15:
+
+```c#
+App.Current.MainPage.Navigation.PushModalAsync(new MediaPage());
+```
+
+Run the app, and you'll notice there's a purple MAUI toolbar across the top.
+
+![image-20230306194025460](images/image-20230306194025460.png)
+
+We can remove that by adding the following to *MainPage.xaml* on line 7:
+
+```
+NavigationPage.HasNavigationBar="False"
+```
+
+The entire *MainPage.xaml* should now look like this:
+
+```xaml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiBlazorMediaElement"
+             x:Class="MauiBlazorMediaElement.MainPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             NavigationPage.HasNavigationBar="False" >
+
+    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
+
+</ContentPage>
+```
+
+Run it again, and you'll see there's no purple navigation bar at the top.
+
+![image-20230306195048577](images/image-20230306195048577.png)
+
+Now, go to the `Counter` page and press the button.
+
+You'll see the media page, just like we saw in the Xaml app.
+
+![image-20230306202450275](images/image-20230306202450275.png)
+
+Click the **Go Back** button to return to the Blazor content.
 
 ## Summary
 
 In this demo we looked at the **MediaElement** control in a **.NET MAUI** application. The **MediaElement** control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
 
-We also learn how to play video and audio files, from a URL and embedded files. 
+We also learned how to play video and audio files, from a URL and embedded files. 
 
-Finally we learned how to adjust the volume using the **Slider** control.
+We also learned how to adjust the volume using the **Slider** control.
+
+Finally, we learned that we can't directly add XAML controls to a Blazor page or component, but we can combine Blazor and XAML pages in the same MAUI app.
 
 For more information about the **.NET MAUI MediaElement** control, check-out the resources below.
 
