@@ -133,18 +133,18 @@ The full *MainPage.xaml* file should look like this:
               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiXamlMediaElement.MainPage">
 
-	<ScrollView>
-		<VerticalStackLayout
-			Spacing="25"
-			Padding="30,0"
-			VerticalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
 
         <toolkit:MediaElement x:Name="videoMediaElement"
             ShouldAutoPlay="True"
             Aspect="AspectFill"
             Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
-		</VerticalStackLayout>
-	</ScrollView>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>
 ```
@@ -158,10 +158,10 @@ namespace MauiXamlMediaElement;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public MainPage()
+    {
+        InitializeComponent();
+    }
 }
 ```
 
@@ -210,30 +210,30 @@ The complete *MainPage.xaml* file should look like this:
 ```xaml
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-			 x:Class="MauiXamlMediaElement.MainPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiXamlMediaElement.MainPage">
 
-	<ScrollView>
-		<VerticalStackLayout Spacing="25"
-							 Padding="30,0"
-							 VerticalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Spacing="25"
+                             Padding="30,0"
+                             VerticalOptions="Center">
             <Button Text="Play Audio" Clicked="Button_Clicked" />
 
             <toolkit:MediaElement x:Name="audioMediaElement"
-								  IsVisible="False"
-								  Source="embed://audio.mp3"
+                                  IsVisible="False"
+                                  Source="embed://audio.mp3"
                                   ShouldShowPlaybackControls="True"
-								  />
+                                  />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
-								  IsVisible="True"
-								  ShouldAutoPlay="True"
-								  Aspect="AspectFill"
-								  Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                                  IsVisible="True"
+                                  ShouldAutoPlay="True"
+                                  Aspect="AspectFill"
+                                  Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
                                   />
-		</VerticalStackLayout>
-	</ScrollView>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>
 ```
@@ -291,33 +291,33 @@ The complete file should look like this:
 
     <ScrollView>
         <VerticalStackLayout Spacing="25"
-							 Padding="30,0"
-							 VerticalOptions="Center">
+                             Padding="30,0"
+                             VerticalOptions="Center">
 
             <Button Text="Play Audio" Clicked="Button_Clicked" />
 
             <toolkit:MediaElement x:Name="audioMediaElement"
-								  IsVisible="False"
-								  Source="embed://audio.mp3"
+                                  IsVisible="False"
+                                  Source="embed://audio.mp3"
                                   ShouldShowPlaybackControls="True"
-								  />
+                                  />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
-								  IsVisible="True"
-								  ShouldAutoPlay="True"
-								  Aspect="AspectFill"
-								  Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                                  IsVisible="True"
+                                  ShouldAutoPlay="True"
+                                  Aspect="AspectFill"
+                                  Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
                                   />
 
             <HorizontalStackLayout x:Name="volumeControl"
-								   IsVisible="True">
+                                   IsVisible="True">
                 <Label Text="Volume" />
 
                 <Slider Maximum="1.0"
-						Minimum="0.0"
+                        Minimum="0.0"
                         Margin="10,0,0,0"
-						Value="{Binding Volume}"
-						WidthRequest="300" />
+                        Value="{Binding Volume}"
+                        WidthRequest="300" />
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
@@ -422,9 +422,9 @@ Replace *MainPage.xaml* with the following:
 
     <ScrollView>
         <VerticalStackLayout
-			Spacing="25"
-			Padding="30,0"
-			VerticalOptions="Center">
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
 
             <Button Text="Play Audio" Clicked="Button_Clicked" />
 
@@ -753,9 +753,9 @@ Replace *MainPage.xaml* with the following:
 
     <ScrollView>
         <VerticalStackLayout
-			Spacing="25"
-			Padding="30,0"
-			VerticalOptions="Center">
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
 
             <Button Text="Play Audio" Clicked="Button_Clicked" />
 
@@ -983,28 +983,28 @@ namespace MauiBlazorMediaElement;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
             .UseMauiCommunityToolkitMediaElement()
             .ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			});
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            });
 
-		builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
 #endif
 
-		builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services.AddSingleton<WeatherForecastService>();
 
-		return builder.Build();
-	}
+        return builder.Build();
+    }
 }
 ```
 
@@ -1025,9 +1025,9 @@ Next, add a new XAML page called *MediaPage.xaml* to the project, and include a 
 
     <ScrollView>
         <VerticalStackLayout
-			Spacing="25"
-			Padding="30,0"
-			VerticalOptions="Center">
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
 
             <HorizontalStackLayout>
                 <Button Text="Go Back" Clicked="BackButton_Clicked" />
