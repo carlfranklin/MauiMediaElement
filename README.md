@@ -227,7 +227,6 @@ Add the following markup before the video `MediaElement ` at line 13 :
 <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
                       Source="embed://audio.mp3"
-                      ShouldShowPlaybackControls="True"
                       />
 ```
 
@@ -250,7 +249,6 @@ The complete *MainPage.xaml* file should look like this:
             <toolkit:MediaElement x:Name="audioMediaElement"
                                   IsVisible="False"
                                   Source="embed://audio.mp3"
-                                  ShouldShowPlaybackControls="True"
                                   />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -293,7 +291,7 @@ Next we'll add the ability to control the volume of the video by modifying the `
 Go to the *MainPage.xaml* file and add the following code at line 26:
 
 ```xaml
-<HorizontalStackLayout x:Name="volumeControl" IsVisible="True">
+<HorizontalStackLayout>
 
     <Label Text="Volume" />
 
@@ -325,7 +323,6 @@ The complete file should look like this:
             <toolkit:MediaElement x:Name="audioMediaElement"
                                   IsVisible="False"
                                   Source="embed://audio.mp3"
-                                  ShouldShowPlaybackControls="True"
                                   />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -335,7 +332,7 @@ The complete file should look like this:
                                   Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
                                   />
 
-            <HorizontalStackLayout x:Name="volumeControl" IsVisible="True">
+            <HorizontalStackLayout>
                 
                 <Label Text="Volume" />
 
@@ -462,7 +459,6 @@ Replace *MainPage.xaml* with the following:
             <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
                       Source="embed://audio.mp3"
-                      ShouldShowPlaybackControls="True"
                       />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -471,8 +467,7 @@ Replace *MainPage.xaml* with the following:
                 Aspect="AspectFill"
                 Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
 
-            <HorizontalStackLayout x:Name="volumeControl"
-                       IsVisible="True">
+            <HorizontalStackLayout>
 
                 <Label FontAttributes="Bold"  Text="Volume" />
 
@@ -793,7 +788,6 @@ Replace *MainPage.xaml* with the following:
             <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
                       Source="embed://audio.mp3"
-                      ShouldShowPlaybackControls="True"
                       />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -802,8 +796,7 @@ Replace *MainPage.xaml* with the following:
                 Aspect="AspectFill"
                 Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
 
-            <HorizontalStackLayout x:Name="volumeControl"
-                       IsVisible="True">
+            <HorizontalStackLayout>
 
                 <Label FontAttributes="Bold"  Text="Volume" />
 
@@ -1105,7 +1098,6 @@ Next, add a new XAML page called *MediaPage.xaml* to the project, and include a 
             <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
                       Source="embed://audio.mp3"
-                      ShouldShowPlaybackControls="True"
                       />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -1114,8 +1106,7 @@ Next, add a new XAML page called *MediaPage.xaml* to the project, and include a 
                 Aspect="AspectFill"
                 Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
 
-            <HorizontalStackLayout x:Name="volumeControl"
-                       IsVisible="True">
+            <HorizontalStackLayout>
 
                 <Label TextColor="Black" FontAttributes="Bold"  Text="Volume" />
 
@@ -1375,7 +1366,7 @@ Click the **Go Back** button to return to the Blazor content.
 
 ## Summary
 
-In this demo we looked at the **MediaElement** control in a **.NET MAUI** application. The **MediaElement** control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
+In this demo we looked at the `MediaElement` control in a **.NET MAUI** application. The `MediaElement` control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
 
 We learned how to play video and audio files from a URL and also from embedded resource files.
 
@@ -1389,7 +1380,7 @@ We learned how to navigate to a XAML page from a Blazor UI interaction.
 
 We learned that Gerald Versluis is a badass.
 
-For more information about the **.NET MAUI MediaElement** control, check-out the resources below.
+For more information about the .NET MAUI `MediaElement` control, check-out the resources below.
 
 ## Complete Code
 

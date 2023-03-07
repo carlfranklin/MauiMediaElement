@@ -15,7 +15,6 @@
             <toolkit:MediaElement x:Name="audioMediaElement"
                       IsVisible="False"
                       Source="embed://audio.mp3"
-                      ShouldShowPlaybackControls="True"
                       />
 
             <toolkit:MediaElement x:Name="videoMediaElement"
@@ -24,8 +23,7 @@
                 Aspect="AspectFill"
                 Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
 
-            <HorizontalStackLayout x:Name="volumeControl"
-                       IsVisible="True">
+            <HorizontalStackLayout>
 
                 <Label FontAttributes="Bold"  Text="Volume" />
 
