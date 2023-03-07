@@ -1,17 +1,3 @@
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-	- [Introduction](#introduction)
-	- [Prerequisites](#prerequisites)
-		- [.NET 7.0](#net-70)
-		- [Visual Studio 2022](#visual-studio-2022)
-		- [Required Workloads](#required-workloads)
-	- [Demo](#demo)
-		- [Create a .NET MAUI Application](#create-a-net-maui-application)
-	- [Summary](#summary)
-	- [Complete Code](#complete-code)
-	- [Resources](#resources)
-
 ## Introduction
 
 In this demo, we will explore the capabilities of the **MediaElement** control in a **.NET MAUI** Application. By delving deep into the **MediaElement** control, we'll discover its powerful features.
