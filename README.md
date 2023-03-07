@@ -28,9 +28,9 @@ For this demo, we are going to use the latest version of [Visual Studio 2022](ht
 
 ### Required Workloads
 
-In order to build `.NET MAUI` applications, you also need the `.NET Multi-platform App UI development` workload, so if you do not have it installed let's do that now.
+In order to build `.NET MAUI` applications, you need the `.NET Multi-platform App UI development` workload, and in order to build **Blazor** apps, the **ASP.NET and web development** workload needs to be installed, so if you do not have them installed let's do that now.
 
-![.NET Multi-platform App UI development](images/34640f10f2d813f245973ddb81ffa401c7366e96e625b3e59c7c51a78bbb2056.png)  
+![MAUI and Blazor Workloads](images/34640f10f2d813f245973ddb81ffa401c7366e96e625b3e59c7c51a78bbb2056.png)  
 
 ## Demo
 
@@ -185,7 +185,7 @@ The **Android** player only shows the ability to pause and play, and to jump to 
 
 >:blue_book: You can hide the player controls from the users by setting the **ShouldShowPlaybackControls** property to **False**.
 
-Now, we are going to add an **MP3** audio file to the solution and play it from a button click. 
+Now, we are going to add an **MP3** audio file to the solution and play it from a button click.
 
 Go to the *Platforms/Resources/Raw* folder, right-click on it, and click on the **Add/Existing Item...** option, and select an audio file. If you want to use the one I used, download it from the repo.
 
@@ -734,10 +734,10 @@ Run the app, and you'll see that the state label changes when you pause, resume,
 
 There are three media-related events you can handle, not so much for reporting to the user, but for you to act on in your code.
 
-| Event       | Description                                                  |
-| :---------- | :----------------------------------------------------------- |
-| MediaOpened | Occurs when the media stream has been validated and opened.  |
-| MediaEnded  | Occurs when the `MediaElement` finishes playing its media.   |
+| Event       | Description                                                    |
+| :---------- | :------------------------------------------------------------- |
+| MediaOpened | Occurs when the media stream has been validated and opened.    |
+| MediaEnded  | Occurs when the `MediaElement` finishes playing its media.     |
 | MediaFailed | Occurs when there's an error associated with the media source. |
 
 Let's create a `MediaStatus` string property, and update it from these three event handlers.
