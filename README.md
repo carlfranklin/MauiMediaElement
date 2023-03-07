@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 In this demo, we will explore the capabilities of the **MediaElement** control in a **.NET MAUI** Application. By delving deep into the **MediaElement** control, we'll discover its powerful features.
 
@@ -40,6 +40,8 @@ In the following demo we will create a **.NET MAUI Application** and we will cov
 - Playing media from URLs or embedded files
 - Customizing appearance and behavior
 - Adjusting volume
+
+Then we are also going to demonstrate the same features, in a **.NET MAUI Blazor** app and we will learn that we can't directly add **XAML** controls to a **Blazor** page or component, but we can combine **Blazor** and **XAML** pages in the same **MAUI** app.
 
 ### Create a .NET MAUI Application
 
@@ -280,7 +282,7 @@ Go to the *MainPage.xaml* file and add the following code below the **videoMedia
 </HorizontalStackLayout>
 ```
 
-The complete file should look like this: 
+The complete file should look like this:
 
 ```xaml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -472,7 +474,7 @@ In the code behind, we'll use that handler to hook another event, `PositionChang
 
 Replace *MainPage.xaml.cs* with the following:
 
-```c#
+```csharp
 using CommunityToolkit.Maui.Core.Primitives;
 namespace MauiXamlMediaElement;
 
@@ -549,7 +551,7 @@ public partial class MainPage : ContentPage
 
 In the `Loaded` event we're hooking the `PositionChanged` event, where we simply tell the UI that our `Position` string property has changed:
 
-```c#
+```csharp
 private void VideoMediaElement_PositionChanged(object sender,
     MediaPositionChangedEventArgs e)
 {
@@ -950,7 +952,7 @@ If you're thinking you can add MAUI Xaml components to a MAUI Blazor page (or co
 
 What you **CAN** do, however, is add a XAML page (containing `MediaElement` or other XAML controls) to a MAUI Blazor app and navigate to that page and back. 
 
-I learned this technique from Gerald Versluis' excellent YouTube Tutorial, [3 Ways [to] Combine .NET MAUI and .NET MAUI Blazor Hybrid](https://www.youtube.com/watch?v=2dllz4NZC0I). You should do yourself a favor and subscribe to his YouTube channel. 
+I learned this technique from Gerald Versluis' excellent **YouTube** Tutorial, [3 Ways [to] Combine .NET MAUI and .NET MAUI Blazor Hybrid](https://www.youtube.com/watch?v=2dllz4NZC0I). You should do yourself a favor and subscribe to his YouTube channel.
 
 Create a new **.NET MAUI Blazor App** Project
 
@@ -1008,7 +1010,7 @@ public static class MauiProgram
 }
 ```
 
-###### Add Audio Resource
+### Add Audio Resource
 
 Add the *audio.mp3* file to your *Resources/Raw* folder 
 
@@ -1247,7 +1249,7 @@ private void BackButton_Clicked(object sender, EventArgs e)
 }
 ```
 
-###### Add Extension Class
+#### Add Extension Class
 
 You'll also need to add the *Extensions* class:
 
@@ -1300,7 +1302,7 @@ Run the app, and you'll notice there's a purple MAUI toolbar across the top.
 
 We can remove that by adding the following to *MainPage.xaml* on line 7:
 
-```
+```xaml
 NavigationPage.HasNavigationBar="False"
 ```
 
@@ -1340,11 +1342,11 @@ Click the **Go Back** button to return to the Blazor content.
 
 In this demo we looked at the **MediaElement** control in a **.NET MAUI** application. The **MediaElement** control provides a simple way to play audio and video files in a wide range of media formats, including MP3, WAV, OGG, MPEG, and many others, as well as media from URLs or embedded files.
 
-We also learned how to play video and audio files, from a URL and embedded files. 
+We also learned how to play video and audio files, from a URL and embedded files.
 
 We also learned how to adjust the volume using the **Slider** control.
 
-Finally, we learned that we can't directly add XAML controls to a Blazor page or component, but we can combine Blazor and XAML pages in the same MAUI app.
+Finally, we learned that we can't directly add **XAML** controls to a **Blazor** page or component, but we can combine **Blazor** and **XAML** pages in the same **MAUI** app.
 
 For more information about the **.NET MAUI MediaElement** control, check-out the resources below.
 
